@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warehouse Command Center</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f6f9;
+    }
+
+    header {
+        background-color: #1e293b;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    nav {
+        background-color: #0f172a;
+        padding: 10px;
+        text-align: center;
+    }
+
+    nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .container {
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .form-section {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    select, input {
+        padding: 10px;
+        margin: 10px 5px 10px 0;
+        width: 200px;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #2563eb;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    button:hover {
+        background-color: #1d4ed8;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        background: white;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    canvas {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Warehouse Command Center</h1>
+</header>
+
+<nav>
+    <a href="index.html">Dashboard</a>
+    <a href="about.html">About</a>
+</nav>
+
+<div class="container">
+
+    <div class="form-section">
+        <h2>Add Item</h2>
+
+        <select id="itemSelect">
+            <option value="">Select Item</option>
+            <option value="Laptops">Laptops</option>
+            <option value="Monitors">Monitors</option>
+            <option value="Keyboards">Keyboards</option>
+            <option value="Mice">Mice</option>
+            <option value="Headsets">Headsets</option>
+        </select>
+
+        <input type="number" id="quantityInput" placeholder="Enter Quantity" min="1">
+
+        <button onclick="addItem()">Add Item</button>
+    </div>
+
+    <div class="form-section">
+        <h2>Inventory List</h2>
+        <ul id="itemList"></ul>
+    </div>
+
+    <div class="form-section">
+        <h2>Inventory Visualization</h2>
+        <canvas id="inventoryChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+    let inventory = JSON.parse(localStorage.getItem("inventory")) || {};
+
+    const ctx = document.getElementById('inventoryChart').getContext('2d');
+    let chart;
+
+    function saveInventory() {
+        localStorage.setItem("inventory", JSON.stringify(inventory));
+    }
+
+    function renderList() {
+        const list = document.getElementById("itemList");
+        list.innerHTML = "";
+
+        for (let item in inventory) {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                ${item} - ${inventory[item]}
+                <button onclick="removeItem('${item}')">Remove</button>
+            `;
+            list.appendChild(li);
+        }
+    }
+
+    function renderChart() {
+        const labels = Object.keys(inventory);
+        const data = Object.values(inventory);
+
+        if (chart) {
+            chart.destroy();
+        }
+
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Quantity',
+                    data: data
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    function addItem() {
+        const item = document.getElementById("itemSelect").value;
+        const quantity = parseInt(document.getElementById("quantityInput").value);
+
+        if (!item || !quantity) {
+            alert("Please select an item and enter a quantity.");
+            return;
+        }
+
+        if (inventory[item]) {
+            inventory[item] += quantity;
+        } else {
+            inventory[item] = quantity;
+        }
+
+        saveInventory();
+        renderList();
+        renderChart();
+
+        document.getElementById("quantityInput").value = "";
+    }
+
+    function removeItem(item) {
+        delete inventory[item];
+        saveInventory();
+        renderList();
+        renderChart();
+    }
+
+    renderList();
+    renderChart();
+</script>
+
+</body>
+</html>
