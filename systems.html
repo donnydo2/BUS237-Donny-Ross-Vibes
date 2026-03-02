@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Systems Guide - Warehouse Command Center</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+}
+
+header {
+    background: #1e293b;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background: #0f172a;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+.section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.step {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #e2e8f0;
+    border-radius: 8px;
+}
+
+.step h3 {
+    margin-top: 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>System User Guide</h1>
+</header>
+
+<nav>
+    <a href="index.html">Dashboard</a>
+    <a href="About.html">About</a>
+    <a href="systems.html">Systems</a>
+</nav>
+
+<div class="container">
+
+    <div class="section">
+        <h2>How to Use the Warehouse Command Center</h2>
+
+        <div class="step">
+            <h3>Step 1: Navigate to the Dashboard</h3>
+            <p>
+                Click on the "Dashboard" tab in the navigation bar.
+                This will take you to the main inventory management page.
+            </p>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Select an Item</h3>
+            <p>
+                Use the dropdown menu under "Add Item" to choose the warehouse item
+                you would like to update.
+            </p>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Enter Quantity</h3>
+            <p>
+                Type the quantity of the selected item into the quantity input field.
+                Only positive numbers are accepted.
+            </p>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Click "Add Item"</h3>
+            <p>
+                Press the "Add Item" button to update the inventory.
+                The system will automatically:
+                <ul>
+                    <li>Update the inventory list</li>
+                    <li>Update the visual bar chart</li>
+                    <li>Save the data to your browser</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: View Visualization</h3>
+            <p>
+                The bar chart automatically reflects inventory levels in real time.
+                Each bar represents the quantity of a specific item.
+            </p>
+        </div>
+
+        <div class="step">
+            <h3>Step 6: Remove Items</h3>
+            <p>
+                To delete an item from the inventory,
+                click the "Remove" button next to the item in the list.
+            </p>
+        </div>
+
+        <div class="step">
+            <h3>Step 7: Data Persistence</h3>
+            <p>
+                The system uses localStorage to save inventory data.
+                This means your inventory remains saved even if the page refreshes.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
