@@ -52,7 +52,7 @@
     select, input {
         padding: 10px;
         margin: 10px 5px 10px 0;
-        width: 200px;
+        width: 180px;
     }
 
     button {
@@ -80,6 +80,7 @@
         border-radius: 5px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
@@ -88,6 +89,11 @@
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .item-info {
+        display: flex;
+        flex-direction: column;
     }
 </style>
 </head>
@@ -118,7 +124,8 @@
             <option value="Headsets">Headsets</option>
         </select>
 
-        <input type="number" id="quantityInput" placeholder="Enter Quantity" min="1">
+        <input type="number" id="quantityInput" placeholder="Quantity" min="1">
+        <input type="number" id="priceInput" placeholder="Price ($)" min="0" step="0.01">
 
         <button onclick="addItem()">Add Item</button>
     </div>
@@ -150,9 +157,17 @@
         list.innerHTML = "";
 
         for (let item in inventory) {
+            const quantity = inventory[item].quantity;
+            const price = inventory[item].price;
+            const total = quantity * price;
+
             const li = document.createElement("li");
             li.innerHTML = `
-                ${item} - ${inventory[item]}
+                <div class="item-info">
+                    <strong>${item}</strong>
+                    Quantity: ${quantity} | Price: $${price.toFixed(2)} | 
+                    <strong>Total Value: $${total.toFixed(2)}</strong>
+                </div>
                 <button onclick="removeItem('${item}')">Remove</button>
             `;
             list.appendChild(li);
@@ -161,7 +176,7 @@
 
     function renderChart() {
         const labels = Object.keys(inventory);
-        const data = Object.values(inventory);
+        const data = labels.map(item => inventory[item].quantity);
 
         if (chart) {
             chart.destroy();
@@ -188,23 +203,24 @@
     function addItem() {
         const item = document.getElementById("itemSelect").value;
         const quantity = parseInt(document.getElementById("quantityInput").value);
+        const price = parseFloat(document.getElementById("priceInput").value);
 
-        if (!item || !quantity) {
-            alert("Please select an item and enter a quantity.");
+        if (!item || !quantity || !price) {
+            alert("Please select an item, enter quantity, and price.");
             return;
         }
 
-        if (inventory[item]) {
-            inventory[item] += quantity;
-        } else {
-            inventory[item] = quantity;
-        }
+        inventory[item] = {
+            quantity: quantity,
+            price: price
+        };
 
         saveInventory();
         renderList();
         renderChart();
 
         document.getElementById("quantityInput").value = "";
+        document.getElementById("priceInput").value = "";
     }
 
     function removeItem(item) {
